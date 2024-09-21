@@ -18,15 +18,6 @@ public class ViaCepController {
     public ViaCepController(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("https://viacep.com.br/").build();
     }
-
-        /*@GetMapping("/{cep}/json")
-        public CepResponse getCep(@PathVariable Integer cep){
-            return this.webClient.get()
-                    .uri("/ws/{cep}/json", cep)
-                    .retrieve()
-                    .bodyToMono(CepResponse.class)
-                    .block();
-        }*/
         @GetMapping("/consulta-cep/{cep}")
         public CepResponse getCep(@PathVariable Integer cep){
             return this.webClient.get()
@@ -35,6 +26,4 @@ public class ViaCepController {
                     .bodyToMono(CepResponse.class)
                     .block();
         }
-
-
 }
