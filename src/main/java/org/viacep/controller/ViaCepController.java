@@ -1,29 +1,33 @@
 package org.viacep.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.bind.annotation.*;
 import org.viacep.entity.dto.response.CepResponse;
+import org.viacep.entity.dto.response.LogResponse;
+import org.viacep.repository.CepRepository;
+import org.viacep.service.CepService;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 public class ViaCepController {
 
-    private WebClient webClient;
+
+    private final CepService cepService;
 
     @Autowired
-    public ViaCepController(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://viacep.com.br/").build();
-    }
+    private CepRepository cepRepository;
+
         @GetMapping("/consulta-cep/{cep}")
-        public CepResponse getCep(@PathVariable Integer cep){
-            return this.webClient.get()
-                    .uri("/ws/{cep}/json", cep)
-                    .retrieve()
-                    .bodyToMono(CepResponse.class)
-                    .block();
+        public CepResponse getCep(@PathVariable String cep){
+            return cepService.getCep(cep);
+        }
+
+        @GetMapping("/lista-ceps")
+        public List<LogResponse> getListaCeps(@RequestParam("uf") String uf) {
+           return cepService.getListaCeps(uf);
         }
 }
