@@ -3,7 +3,6 @@ package org.viacep.entity.dto;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
