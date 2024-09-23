@@ -30,6 +30,9 @@ public class CepServiceImpl implements CepService {
     @Override
     public CepResponse getCep(String cep) {
         try {
+            if (cep == null || cep.trim().isEmpty() ) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O CEP não foi preenchido.");
+            }
             CepResponse cepResponse =
                     this.webClient.get()
                             .uri("/ws/{cep}/json", cep)
@@ -38,7 +41,7 @@ public class CepServiceImpl implements CepService {
                             .block();
 
             if (cepResponse == null || cepResponse.getCep() == null) {
-                throw new IllegalArgumentException("CEP não encontrado: " + cep);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CEP não encontrado: " + cep);
             }
 
             UfDto insertLog = new UfDto();
@@ -50,6 +53,9 @@ public class CepServiceImpl implements CepService {
 
             return cepResponse;
 
+        }
+        catch (ResponseStatusException e) {
+            throw e;
         }
         catch (Exception e) {
             throw new RuntimeException("Erro inesperado ao buscar o CEP", e);
@@ -66,7 +72,7 @@ public class CepServiceImpl implements CepService {
             return  logResponseList.size() > 20 ? logResponseList.subList(0, 20) : logResponseList;
         }
         catch (Exception e) {
-            throw new RuntimeException("Erro inesperado ao buscar UF", e);
+            throw new RuntimeException("Erro inesperado ao buscar o CEP", e);
         }
     }
 }
