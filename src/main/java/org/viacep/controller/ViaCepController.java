@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class ViaCepController {
 
-
     private final CepService cepService;
 
     @Autowired
@@ -27,7 +26,7 @@ public class ViaCepController {
         }
 
         @GetMapping("/lista-ceps")
-        public List<LogResponse> getListaCeps(@RequestParam("uf") String uf) {
+        public List<LogResponse> getListaCeps(@RequestParam(value = "uf", required = true) String uf) {
            return cepService.getListaCeps(uf);
         }
 }
