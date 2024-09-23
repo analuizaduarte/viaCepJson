@@ -163,7 +163,7 @@ public class CepServiceImplTest {
 
     @Test
     void testGetListaCepsExceptionHandling() {
-        when(cepRepository.findListCep("37550110")).thenThrow(new RuntimeException("Erro inesperado ao buscar o CEP"));
+        when(cepRepository.findListCep("37550110")).thenThrow(new RuntimeException("Erro inesperado ao buscar UF"));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             cepService.getListaCeps("37550110");
@@ -172,6 +172,6 @@ public class CepServiceImplTest {
         assertThrows(RuntimeException.class, () -> {
             cepService.getListaCeps("37550110");
         });
-        assertEquals("Erro inesperado ao buscar o CEP", exception.getMessage());
+        assertEquals("Erro inesperado ao buscar UF", exception.getMessage());
     }
 }
