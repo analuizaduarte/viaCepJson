@@ -1,10 +1,12 @@
 package org.viacep.entity.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "log")
@@ -23,5 +25,5 @@ public class UfDto {
     private String cep;
 
     @Column(name = "dt_hr_consulta")
-    private Date dtHrConsulta;
+    private LocalDate dtHrConsulta;
 }

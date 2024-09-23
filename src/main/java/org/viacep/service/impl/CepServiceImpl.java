@@ -2,17 +2,17 @@ package org.viacep.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 import org.viacep.entity.dto.UfDto;
 import org.viacep.entity.dto.response.CepResponse;
 import org.viacep.entity.dto.response.LogResponse;
 import org.viacep.repository.CepRepository;
 import org.viacep.service.CepService;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -44,7 +44,7 @@ public class CepServiceImpl implements CepService {
             UfDto insertLog = new UfDto();
             insertLog.setUf(cepResponse.getUf());
             insertLog.setCep(cepResponse.getCep());
-            insertLog.setDtHrConsulta(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+            insertLog.setDtHrConsulta(LocalDate.now());
 
             cepRepository.save(insertLog);
 
@@ -58,6 +58,9 @@ public class CepServiceImpl implements CepService {
 
     @Override
     public List<LogResponse> getListaCeps(String uf) {
+        if (uf == null || uf.trim().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O parâmetro 'uf' é obrigatório.");
+        }
         try {
             List<LogResponse> logResponseList = cepRepository.findListCep(uf);
             return  logResponseList.size() > 20 ? logResponseList.subList(0, 20) : logResponseList;
