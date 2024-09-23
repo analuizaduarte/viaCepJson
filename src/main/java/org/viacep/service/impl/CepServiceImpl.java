@@ -72,7 +72,7 @@ public class CepServiceImpl implements CepService {
             return  logResponseList.size() > 20 ? logResponseList.subList(0, 20) : logResponseList;
         }
         catch (Exception e) {
-            throw new RuntimeException("Erro inesperado ao buscar o CEP", e);
+            throw new RuntimeException("Erro inesperado ao buscar UF", e);
         }
     }
 }
